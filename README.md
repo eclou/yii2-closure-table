@@ -1,0 +1,1 @@
+# yii2-closure-table
