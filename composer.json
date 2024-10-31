@@ -1,0 +1,24 @@
+{
+    "name": "eclou/yii2-closure-table",
+    "description": "the closure table behavior for yii2",
+    "type": "yii2-extension",
+    "minimum-stability": "dev",
+    "require": {
+        "yiisoft/yii2": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "eclou\\ClosureTable\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "eclou"
+        }
+    ],
+    "config": {
+        "allow-plugins": {
+            "yiisoft/yii2-composer": true
+        }
+    }
+}
