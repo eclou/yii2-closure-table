@@ -163,6 +163,11 @@ SQL;
         return true;
     }
 
+    /**
+     * @param $node ActiveRecord
+     * @return void
+     * @throws \yii\db\Exception
+     */
     public function moveTo($node)
     {
         $trans = $this->owner::getDb()->beginTransaction();
@@ -229,5 +234,28 @@ SQL;
     public function children($depth = 1)
     {
         return $this->owner::find()->children($this->owner->primaryKey, $depth);
+    }
+
+    public function isTreeNode()
+    {
+        return $this->closureTable::find()
+            ->where([
+                "{$this->parentAttribute}" => $this->owner->primaryKey,
+                "{$this->childAttribute}" => $this->owner->primaryKey,
+                'depth' => 0
+            ])->exists();
+    }
+
+    /**
+     * @param $node ActiveRecord
+     * @return bool
+     */
+    public function isChildOf($node)
+    {
+        return $this->closureTable::find()
+            ->where([
+                "{$this->parentAttribute}" => $node->primaryKey,
+                "{$this->childAttribute}" => $this->owner->primaryKey
+            ])->exists();
     }
 }
