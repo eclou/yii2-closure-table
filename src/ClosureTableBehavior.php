@@ -197,6 +197,19 @@ SQL;
         }
     }
 
+    public function moveAsRoot()
+    {
+        $sql =
+            /** @lang text */
+            <<<SQL
+                 DELETE ct FROM {$this->closureTable::tableName()}  ct
+                 JOIN {$this->closureTable::tableName()} AS ct2 ON ct.{$this->childAttribute} = ct2.{$this->childAttribute}
+                 WHERE ct2.{$this->parentAttribute} = :nodeId AND ct.{$this->parentAttribute} != :nodeId AND ct.parent != ct.child
+SQL;
+
+        return $this->owner::getDb()->createCommand($sql)->bindValues([':nodeId' => $this->owner->primaryKey])->execute();
+    }
+
 
     /**
      * @return int
@@ -241,8 +254,8 @@ SQL;
         return $this->closureTable::find()
             ->where([
                 "{$this->parentAttribute}" => $this->owner->primaryKey,
-                "{$this->childAttribute}" => $this->owner->primaryKey,
-                'depth' => 0
+                "{$this->childAttribute}"  => $this->owner->primaryKey,
+                'depth'                    => 0
             ])->exists();
     }
 
@@ -255,7 +268,7 @@ SQL;
         return $this->closureTable::find()
             ->where([
                 "{$this->parentAttribute}" => $node->primaryKey,
-                "{$this->childAttribute}" => $this->owner->primaryKey
+                "{$this->childAttribute}"  => $this->owner->primaryKey
             ])->exists();
     }
 }
