@@ -204,7 +204,7 @@ SQL;
             <<<SQL
                  DELETE ct FROM {$this->closureTable::tableName()}  ct
                  JOIN {$this->closureTable::tableName()} AS ct2 ON ct.{$this->childAttribute} = ct2.{$this->childAttribute}
-                 WHERE ct2.{$this->parentAttribute} = :nodeId AND ct.{$this->parentAttribute} != :nodeId AND ct.parent != ct.child
+                 WHERE ct2.{$this->parentAttribute} = :nodeId AND ct.{$this->parentAttribute} != :nodeId AND ct.{$this->parentAttribute} != ct.{$this->childAttribute}
 SQL;
 
         return $this->owner::getDb()->createCommand($sql)->bindValues([':nodeId' => $this->owner->primaryKey])->execute();
